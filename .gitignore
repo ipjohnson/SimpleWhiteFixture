@@ -1,0 +1,15 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Output/Tests
+*.suo
+/src/packages
+/src/SimpleWhiteFixture/bin/Debug
+/src/SimpleWhiteFixture/obj/Debug
+/src/SimpleWhiteFixture.Example/obj/Debug
+/src/SimpleWhiteFixture.Example/bin/Debug
+/src/SimpleWhiteFixture.Example.Tests/obj/Debug
+/src/SimpleWhiteFixture.Example.Tests/bin/Debug
+/src/SimpleWhiteFixture.xUnit/obj/Debug
+/src/SimpleWhiteFixture.xUnit/bin/Debug
