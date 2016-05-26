@@ -12,5 +12,5 @@ build:
   publish_nuget: true
   publish_nuget_symbols: true
   verbosity: minimal
-test_script:
-  - cmd: '"c:\Projects\SimpleWhiteFixture\src\packages\xunit.runner.console.2.1.0\tools\xunit.console.exe" "c:\Projects\SimpleWhiteFixture\Output\Tests\SimpleWhiteFixture.Example.Tests.dll" /appveyor'
+test:
+  assemblies: Output\Tests\SimpleWhiteFixture.Example.Tests.dll
