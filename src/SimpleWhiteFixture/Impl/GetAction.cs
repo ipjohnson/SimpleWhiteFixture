@@ -50,7 +50,7 @@ namespace SimpleWhiteFixture.Impl
             get
             {
                 return _fixture.Data.Locate<IFromAction<string>>(constraints:
-                    new { _Value = new object[] { _fixture, (Func<IUIItem,string>)GetTextAction } });
+                    new { _Values = new object[] { _fixture, (Func<IUIItem,string>)GetTextAction } });
             }
         }
 

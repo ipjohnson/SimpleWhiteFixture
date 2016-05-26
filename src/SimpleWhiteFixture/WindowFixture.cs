@@ -39,7 +39,7 @@ namespace SimpleWhiteFixture
             {
                 Initialize();
 
-                return _data.Locate<IGetAction>();
+                return _data.Locate<IGetAction>(constraints: GetConstrainObject());
             }
         }
 
@@ -143,6 +143,7 @@ namespace SimpleWhiteFixture
             _data.ExportAs<WaitWhileBusyAction, IWaitWhileBusyAction>();
             _data.ExportAs<WaitTillAction, IWaitTillAction>();
             _data.ExportAs<YieldAction, IYieldAction>();
+            _data.ExportAs<FromAction<string>, IFromAction<string>>();
         }
 
         protected virtual object GetConstrainObject()
