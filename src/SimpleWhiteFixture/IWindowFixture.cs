@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems.WindowItems;
+using TestStack.White.WindowsAPI;
 using static TestStack.White.UIItems.WindowItems.Window;
 
 namespace SimpleWhiteFixture
@@ -46,12 +47,22 @@ namespace SimpleWhiteFixture
 
         Fixture Data { get; }
 
-        IFillAction Fill(string form = null);
+        IFillWithAction Fill(string form = null);
 
-        IFillAction Fill(SearchCriteria by);
+        IFillWithAction Fill(SearchCriteria by);
 
-        IAutoFillAction AutoFill(object withSeed = null);
+        IWindowFixture Focus(string id);
+
+        IWindowFixture Focus(SearchCriteria by);
+
+        IIntoAction Enter(string value);
         
+        IIntoAction Key(KeyboardInput.SpecialKeys key);        
+
+        IWindowFixture AutoFill(string startingPoint = null, object seed = null);
+
+        IWindowFixture AutoFill(SearchCriteria by, object seed = null);
+
         IWindowFixture Click(string id);
 
         IWindowFixture DoubleClick(string id);
@@ -61,6 +72,8 @@ namespace SimpleWhiteFixture
         IWindowFixture DoubleClick(SearchCriteria by, ClickMode clickMode = ClickMode.ClickFirst);
 
         IWindowFixture NewWindow(string windowName);
+
+        IWindowFixture NewWindow(Window window);
 
         IGetAction Get { get; }
 

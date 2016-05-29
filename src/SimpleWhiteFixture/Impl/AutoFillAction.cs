@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestStack.White;
 using TestStack.White.UIItems;
 using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems.ListBoxItems;
@@ -11,18 +12,10 @@ namespace SimpleWhiteFixture.Impl
 {
     public interface IAutoFillAction
     {
-        IAutoFillSelectionAction AutoFill(object seed);
+        IWindowFixture AutoFill(string startingPoint = null, object seed = null);
+
+        IWindowFixture AutoFill(SearchCriteria by, object seed = null);
     }
-
-    public interface IAutoFillSelectionAction
-    {
-        IWindowFixture All(string startingWith = null);
-
-        IWindowFixture All(SearchCriteria criteria);
-
-        IWindowFixture Matching(SearchCriteria criteria);
-    }
-
     public class AutoFillAction : IAutoFillAction
     {
         private IWindowFixture _fixture;
@@ -31,24 +24,14 @@ namespace SimpleWhiteFixture.Impl
         {
             _fixture = fixture;
         }
-
-        public IAutoFillSelectionAction AutoFill(object seed)
+                
+        protected virtual void ProcessUIItems(IEnumerable<IUIItem> items, object seed)
         {
-            return _fixture.Data.Locate<IAutoFillSelectionAction>(constraints: 
-                new
-                {
-                    seed,
-                    _Values = new object[] { _fixture, (Action<IEnumerable<IUIItem>>)ProcessUIItems }
-                });
-        }        
-
-        protected virtual void ProcessUIItems(IEnumerable<IUIItem> items)
-        {
-            foreach(var item in GetInputControls(items))
+            foreach(var item in items)
             {
                 if(item is TextBox)
                 {
-                    string value = _fixture.Data.Generate<string>(item.Id);
+                    string value = _fixture.Data.Generate<string>(item.Id, seed);
 
                     item.SetValue(value);
                 }
@@ -56,7 +39,7 @@ namespace SimpleWhiteFixture.Impl
                 {
                     CheckBox checkBox = item as CheckBox;
 
-                    checkBox.Checked = _fixture.Data.Generate<bool>(checkBox.Id);
+                    checkBox.Checked = _fixture.Data.Generate<bool>(checkBox.Id, seed);
                 }
                 else if(item is ComboBox)
                 {
@@ -76,76 +59,77 @@ namespace SimpleWhiteFixture.Impl
                 }
             }
         }
-
-        protected virtual IEnumerable<IUIItem> GetInputControls(IEnumerable<IUIItem> items)
+                
+        public IWindowFixture AutoFill(string startingPoint = null, object seed = null)
         {
-            foreach (var item in items)
+            if(!string.IsNullOrEmpty(startingPoint))
             {
-                if (item is TextBox ||
-                   item is CheckBox ||
-                   item is ComboBox ||
-                   item is ListBox)
+                var item = _fixture.Instance.Get(SearchCriteria.ByAutomationId(startingPoint));
+
+                var container = item as IUIItemContainer;
+
+                if(container != null)
                 {
-                    yield return item;
-                }
-            }
-        }
-    }
+                    var items = container.GetMultiple(SearchCriteria.All);
 
-    public class AutoFillSelectionAction : IAutoFillSelectionAction
-    {
-        private IWindowFixture _fixture;
-        private Action<IEnumerable<IUIItem>> _applyAction;
-        private object seed;
-
-        public AutoFillSelectionAction(object seed, IWindowFixture fixture, Action<IEnumerable<IUIItem>> applyAction)
-        {
-            _fixture = fixture;
-            _applyAction = applyAction;
-        }
-
-        public IWindowFixture All(SearchCriteria criteria)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IWindowFixture All(string startingWith = null)
-        {
-            IEnumerable<IUIItem> items = null;
-
-            if (startingWith != null)
-            {
-                var element = _fixture.Instance.Get(SearchCriteria.ByAutomationId(startingWith));
-
-                IUIItemContainer container = element as IUIItemContainer;
-
-                if (container != null)
-                {
-                    items = container.GetMultiple(SearchCriteria.All);
+                    ProcessUIItems(items, seed);                    
                 }
                 else
                 {
-                    items = new[] { element };
+                    ProcessUIItems(new[] { item }, seed);
                 }
             }
             else
             {
-                items = _fixture.Instance.Items;
+                ProcessUIItems(_fixture.Instance.Items, seed);
             }
 
-            _applyAction(items);
-
             return _fixture;
         }
 
-        public IWindowFixture Matching(SearchCriteria criteria)
+        public IWindowFixture AutoFill(SearchCriteria by, object seed = null)
         {
-            var elements = _fixture.Instance.GetMultiple(criteria);
+            var searchItems = _fixture.Instance.GetMultiple(by);
+            List<IUIItem> items = new List<IUIItem>();
 
-            _applyAction(elements);
+            foreach(var item in searchItems)
+            {
+                IUIItemContainer container = item as IUIItemContainer;
+
+                if(container != null)
+                {
+                    items.AddRange(container.GetMultiple(SearchCriteria.All));
+                }
+                else
+                {
+                    items.Add(item);
+                }
+            }
+
+            ProcessUIItems(items, seed);
 
             return _fixture;
-        }
+        }        
 
+        private Dictionary<string,object> GetSeedValues(object seed)
+        {
+            Dictionary<string, object> values = new Dictionary<string, object>();
+
+            if(seed != null)
+            {
+                foreach(var property in seed.GetType().GetProperties())
+                {
+                    if(property.CanRead && 
+                       property.GetMethod.IsPublic && 
+                      !property.GetMethod.IsStatic && 
+                      !property.GetMethod.GetParameters().Any())
+                    {
+                        values[property.Name] = property.GetValue(seed);
+                    }                    
+                }
+            }
+
+            return values;
+        }
     }
 }

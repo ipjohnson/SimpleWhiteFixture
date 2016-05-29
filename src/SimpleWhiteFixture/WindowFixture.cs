@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TestStack.White;
 using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems.WindowItems;
+using TestStack.White.WindowsAPI;
 
 namespace SimpleWhiteFixture
 {
@@ -41,27 +42,6 @@ namespace SimpleWhiteFixture
 
                 return _data.Locate<IGetAction>(constraints: GetConstrainObject());
             }
-        }
-
-        public IFillAction Fill(string form = null)
-        {
-            Initialize();
-
-            throw new NotImplementedException();
-        }
-
-        public IFillAction Fill(SearchCriteria by)
-        {
-            Initialize();
-
-            throw new NotImplementedException();
-        }
-
-        public IAutoFillAction AutoFill(object withSeed = null)
-        {
-            Initialize();
-
-            throw new NotImplementedException();
         }
 
         public IWindowFixture Click(string id)
@@ -101,6 +81,13 @@ namespace SimpleWhiteFixture
             return CreateNewWindowFixture(newWindow);
         }
 
+        public IWindowFixture NewWindow(Window window)
+        {
+            Initialize();
+
+            return CreateNewWindowFixture(window);
+        }
+
         public IWindowFixture WaitWhileBusy()
         {
             Initialize();
@@ -121,6 +108,63 @@ namespace SimpleWhiteFixture
 
             return _data.Locate<IYieldAction>(constraints: GetConstrainObject()).Yields<T>();
         }
+
+        public IFillWithAction Fill(string form = null)
+        {
+            Initialize();
+
+            return _data.Locate<IFillAction>(constraints: GetConstrainObject()).Fill(form);
+        }
+
+        public IFillWithAction Fill(SearchCriteria by)
+        {
+            Initialize();
+
+            return _data.Locate<IFillAction>(constraints: GetConstrainObject()).Fill(by);
+        }
+
+        public IWindowFixture Focus(string id)
+        {
+            Initialize();
+
+            return _data.Locate<IFocusAction>(constraints: GetConstrainObject()).Focus(id);
+        }
+
+        public IWindowFixture Focus(SearchCriteria by)
+        {
+            Initialize();
+
+            return _data.Locate<IFocusAction>(constraints: GetConstrainObject()).Focus(by);
+        }
+
+        public IIntoAction Enter(string value)
+        {
+            Initialize();
+
+            return _data.Locate<IEnterAction>(constraints: GetConstrainObject()).Enter(value);
+        }
+
+        public IIntoAction Key(KeyboardInput.SpecialKeys key)
+        {
+            Initialize();
+
+            return _data.Locate<IKeyInAction>(constraints: GetConstrainObject()).Key(key);
+        }
+
+        public IWindowFixture AutoFill(string startingPoint = null, object seed = null)
+        {
+            Initialize();
+
+            return _data.Locate<IAutoFillAction>(constraints: GetConstrainObject()).AutoFill(startingPoint, seed);
+        }
+
+        public IWindowFixture AutoFill(SearchCriteria by, object seed = null)
+        {
+            Initialize();
+
+            return _data.Locate<IAutoFillAction>(constraints: GetConstrainObject()).AutoFill(by, seed);
+        }
+
 
         protected void Initialize()
         {
@@ -143,7 +187,14 @@ namespace SimpleWhiteFixture
             _data.ExportAs<WaitWhileBusyAction, IWaitWhileBusyAction>();
             _data.ExportAs<WaitTillAction, IWaitTillAction>();
             _data.ExportAs<YieldAction, IYieldAction>();
-            _data.ExportAs<FromAction<string>, IFromAction<string>>();
+            _data.ExportAs<FromAction<string>, IFromAction<string>>();            
+            _data.ExportAs<FillAction, IFillAction>();
+            _data.ExportAs<FillWithAction, IFillWithAction>();
+            _data.ExportAs<AutoFillAction, IAutoFillAction>();
+            _data.ExportAs<FocusAction, IFocusAction>();
+            _data.ExportAs<EnterAction, IEnterAction>();
+            _data.ExportAs<KeyInAction, IKeyInAction>();
+            _data.ExportAs<IntoAction, IIntoAction>();
         }
 
         protected virtual object GetConstrainObject()
@@ -155,5 +206,6 @@ namespace SimpleWhiteFixture
         {
             return new WindowFixture(_application, newWindow, Data, _configuration);
         }
+
     }
 }

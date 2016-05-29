@@ -20,5 +20,27 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <TextBlock Name="LeftTopLabel" Text="Test Label"/>
+        <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                
+            </Grid.RowDefinitions>
+            <Label Name="Label1">Label1</Label>
+            <TextBox Name="TextBox1" Grid.Column="1"></TextBox>
+            <TextBox Name="TextBox2" Grid.Column="2"></TextBox>
+            <Label Name="Label2" Grid.Row="1">Label2</Label>
+            <TextBox Name="TextBox3" Grid.Column="1" Grid.Row="1"></TextBox>
+            <TextBox Name="TextBox4" Grid.Column="2" Grid.Row="1"></TextBox>
+            <Label Name="Label3" Grid.Row="2">Label3</Label>
+            <TextBox Name="TextBox5" Grid.Column="1" Grid.Row="2"></TextBox>
+            <TextBox Name="TextBox6" Grid.Column="2" Grid.Row="2"></TextBox>
+        </Grid>
     </Grid>
 </Window>

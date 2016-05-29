@@ -10,7 +10,7 @@ namespace SimpleWhiteFixture.Impl
 {
     public interface IFromAction<T>
     {
-        T From(string id);
+        T From(string id = null);
 
         T From(SearchCriteria by);
     }
@@ -18,9 +18,9 @@ namespace SimpleWhiteFixture.Impl
     public class FromAction<T> : IFromAction<T>
     {
         private IWindowFixture _fixture;
-        private Func<IUIItem, T> _func;
+        private Func<IEnumerable<IUIItem>, T> _func;
 
-        public FromAction(IWindowFixture fixture, Func<IUIItem, T> func)
+        public FromAction(IWindowFixture fixture, Func<IEnumerable< IUIItem>, T> func)
         {
             _fixture = fixture;
             _func = func;
@@ -28,12 +28,19 @@ namespace SimpleWhiteFixture.Impl
 
         public T From(SearchCriteria by)
         {
-            throw new NotImplementedException();
+            var element = _fixture.Instance.GetMultiple(by);
+
+            return _func(element);
         }
 
         public T From(string id)
         {
-            var element = _fixture.Instance.Get(SearchCriteria.ByAutomationId(id));
+            if(id == null)
+            {
+                return _func(_fixture.Instance.Items);
+            }
+
+            var element = _fixture.Instance.GetMultiple(SearchCriteria.ByAutomationId(id));
 
             return _func(element);
         }
