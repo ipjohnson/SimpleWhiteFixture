@@ -17,6 +17,10 @@ namespace SimpleWhiteFixture.xUnit
         Application ProvideApplication(MethodInfo method);
     }
 
+    /// <summary>
+    /// attribute that specifies an application to run 
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = true, Inherited = true)]
     public class ApplicationAttribute : Attribute, IApplicationAttribute
     {
         public ApplicationAttribute(string application)
@@ -28,7 +32,7 @@ namespace SimpleWhiteFixture.xUnit
 
         public string Window { get; set; }
 
-        public Application ProvideApplication(MethodInfo method)
+        public virtual Application ProvideApplication(MethodInfo method)
         {
             return TestStack.White.Application.Launch(Application);
         }

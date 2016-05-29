@@ -1,0 +1,19 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+  <metadata>
+    <id>SimpleWhiteFixture.xUnit</id>
+    <version>$version$</version>
+    <title>SimpleWhiteFixture.xUnit</title>
+    <authors>Ian Johnson</authors>
+    <owners>Ian Johnson</owners>
+    <licenseUrl>https://github.com/ipjohnson/SimpleWhiteFixture/blob/master/License.md</licenseUrl>
+    <projectUrl>https://github.com/ipjohnson/SimpleWhiteFixture</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Helper framework that uses xUnit to execute UI tests based on TestStack.White</description>
+    <copyright>Copyright ©  2016</copyright>
+    <tags>TestStack.White White Test Fixture Data Generation xUnit</tags>
+    <dependencies>
+      <dependency id="SimpleWhiteFixture" version="$version$"/>
+    </dependencies>
+  </metadata>
+</package>

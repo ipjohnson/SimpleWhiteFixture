@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="SimpleWhiteFixture.xUnit.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SimpleWhiteFixture\SimpleWhiteFixture.csproj">
