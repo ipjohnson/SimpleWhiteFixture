@@ -207,5 +207,9 @@ namespace SimpleWhiteFixture
             return new WindowFixture(_application, newWindow, Data, _configuration);
         }
 
+        public override string ToString()
+        {
+            return _window.Title;
+        }
     }
 }
