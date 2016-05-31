@@ -69,7 +69,9 @@ namespace SimpleWhiteFixture.Impl
 
         protected virtual void FillFields(object fillValue)
         {
-            if(fillValue.GetType().IsPrimitive)
+            if(fillValue.GetType().IsPrimitive ||
+               fillValue.GetType() == typeof(string) ||
+               fillValue.GetType() == typeof(DateTime))
             {
                 FillFieldsWithPrimitive(fillValue);
             }

@@ -48,5 +48,14 @@ namespace SimpleWhiteFixture.Example.Tests
             model.TextBox5.Should().NotBeNullOrEmpty();
             model.TextBox6.Should().NotBeNullOrEmpty();
         }
+
+        [UITheory]
+        [Application("SimpleWhiteFixture.Example.exe")]
+        public void UITheory_LaunchTestApp_FillWithString(IWindowFixture i)
+        {
+            i.Fill("TextBox1").With("Test String");
+
+            i.Get.Text.From("TextBox1").Should().Be("Test String");
+        }
     }
 }
