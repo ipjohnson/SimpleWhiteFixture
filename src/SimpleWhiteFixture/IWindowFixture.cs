@@ -45,6 +45,10 @@ namespace SimpleWhiteFixture
 
         WindowFixtureConfiguration Configuration { get; }
 
+        void Close();
+
+        bool IsClosed { get; }
+
         Fixture Data { get; }
 
         IFillWithAction Fill(string form = null);

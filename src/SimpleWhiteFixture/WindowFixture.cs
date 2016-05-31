@@ -25,12 +25,21 @@ namespace SimpleWhiteFixture
             _application = application;
             _window = window;
             _data = data ?? new Fixture();
-            _configuration = configuration ?? new WindowFixtureConfiguration();
+            _configuration = configuration ?? new WindowFixtureConfiguration();            
         }
 
         public Window Instance { get { return _window; } }
 
         public Fixture Data { get { return _data; } }
+
+        public void Close()
+        {
+            Initialize();
+
+            Data.Locate<ICloseAction>(constraints: GetConstrainObject()).Close();
+        }
+
+        public bool IsClosed {  get { return _window.IsClosed; } }
 
         public WindowFixtureConfiguration Configuration { get { return _configuration; } }
 
@@ -195,6 +204,7 @@ namespace SimpleWhiteFixture
             _data.ExportAs<EnterAction, IEnterAction>();
             _data.ExportAs<KeyInAction, IKeyInAction>();
             _data.ExportAs<IntoAction, IIntoAction>();
+            _data.ExportAs<CloseAction, ICloseAction>();
         }
 
         protected virtual object GetConstrainObject()

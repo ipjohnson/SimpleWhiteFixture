@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Impl\AutoFillAction.cs" />
     <Compile Include="Impl\ClickAction.cs" />
+    <Compile Include="Impl\CloseAction.cs" />
     <Compile Include="Impl\DoubleClickAction.cs" />
     <Compile Include="Impl\EnterAction.cs" />
     <Compile Include="Impl\FillAction.cs" />
